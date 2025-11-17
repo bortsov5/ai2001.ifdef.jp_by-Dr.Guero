@@ -717,691 +717,664 @@ case 700:               // Отладка
     }
 }
 
-
 //######################
-//#### ѓLЃ[“ЗЌћђ§Њд ####
+//#### Обработка клавиш ####
 //######################
 void keyCont(void){
 
-	//////////////////////////
-	////// TTYѓRѓ}ѓ“ѓhЏ€—ќ //////
-	//////////////////////////
-	ff[0]=0;
-	ff[1]=0;
-	uart_rx (UART_COM, ff, 1,1);
-	if(ff[0]!=0){
-		sprintf( (char *)dsp,"%c \r\n",ff[0] );
-		printS((char *)dsp);
+    //////////////////////////
+    ////// Обработка TTY команд //////
+    //////////////////////////
+    ff[0]=0;
+    ff[1]=0;
+    uart_rx (UART_COM, ff, 1,1);
+    if(ff[0]!=0){
+        sprintf( (char *)dsp,"%c \r\n",ff[0] );
+        printS((char *)dsp);
 
-		if(ff[0]==' ')keyMode=0;//ѓLЃ[ѓ‚Ѓ[ѓhѓЉѓZѓbѓg
+        if(ff[0]==' ')keyMode=0; // Сброс режима клавиш
 
-		///////////////////////
-		//// Љо–{“ь—Нѓ‚Ѓ[ѓh ////
-		///////////////////////
-		if(keyMode==0){
-			switch(ff[0]){
-				case 'r':		//ѓЉѓZѓbѓg
-					motCt=100;
-					mode=710;
-					sprintf( (char *)dsp,"**** Reset ****\r\n" );
-					printS((char *)dsp);
-					break;
+        ///////////////////////
+        //// Основной режим клавиш ////
+        ///////////////////////
+        if(keyMode==0){
+            switch(ff[0]){
+                case 'r':       // Сброс
+                    motCt=100;
+                    mode=710;
+                    sprintf( (char *)dsp,"**** Reset ****\r\n" );
+                    printS((char *)dsp);
+                    break;
 
-				case 'g':		//ЉJЋn
-					sprintf( (char *)dsp,"**** Go ****\r\n" );
-					printS((char *)dsp);
-					break;
+                case 'g':       // Старт
+                    sprintf( (char *)dsp,"**** Go ****\r\n" );
+                    printS((char *)dsp);
+                    break;
 
-				case 't':		//ЋЋЊ±
-					mode=790;
-					sprintf( (char *)dsp,"**** angle Disp ****\r\n" );
-					printS((char *)dsp);
-					break;
+                case 't':       // Отладка
+                    mode=790;
+                    sprintf( (char *)dsp,"**** angle Disp ****\r\n" );
+                    printS((char *)dsp);
+                    break;
 
-				case 'y':		//ЋЋЊ±
-					mode=791;
-					sprintf( (char *)dsp,"**** debug ****\r\n" );
-					printS((char *)dsp);
-					break;
+                case 'y':       // Отладка
+                    mode=791;
+                    sprintf( (char *)dsp,"**** debug ****\r\n" );
+                    printS((char *)dsp);
+                    break;
 
-//				case 'm':		//ѓpѓ‰ѓЃѓ^ѓ‚Ѓ[ѓh
-//					keyMode=1;
-//					break;
-				case 'p':		//“Б’и•Пђ”ђЭ’иѓ‚Ѓ[ѓh
-					keyMode=5;
-					break;
-				case 'k':		//ѓTЃ[ѓ{ KѓOѓ‹Ѓ[ѓv
-					keyMode=2;
-					break;
-				case 'u':		//ѓTЃ[ѓ{ UѓOѓ‹Ѓ[ѓv
-					keyMode=3;
-					break;
-				case 'a':		//ѓTЃ[ѓ{ AѓOѓ‹Ѓ[ѓv
-					keyMode=4;
-					break;
-				case 'h':		//ѓTЃ[ѓ{ HѓOѓ‹Ѓ[ѓv
-					keyMode=50;
-					break;
-				case 'e':		//ѓTЃ[ѓ{ EѓOѓ‹Ѓ[ѓv
-					keyMode=60;
-					break;
-				case 'z':		//ѓTЃ[ѓ{ HEAD
-					keyMode=700;
-					break;
-				case 'w':		//ѓTЃ[ѓ{ WEST
-					keyMode=800;
-					break;
-			}
-		}
+//              case 'm':       // Режим мануального управления
+//                  keyMode=1;
+//                  break;
+                case 'p':       // Режим установки параметров
+                    keyMode=5;
+                    break;
+                case 'k':       // Режим сервоприводов K
+                    keyMode=2;
+                    break;
+                case 'u':       // Режим сервоприводов U
+                    keyMode=3;
+                    break;
+                case 'a':       // Режим сервоприводов A
+                    keyMode=4;
+                    break;
+                case 'h':       // Режим сервоприводов H
+                    keyMode=50;
+                    break;
+                case 'e':       // Режим сервоприводов E
+                    keyMode=60;
+                    break;
+                case 'z':       // Режим сервопривода HEAD
+                    keyMode=700;
+                    break;
+                case 'w':       // Режим сервопривода WEST
+                    keyMode=800;
+                    break;
+            }
+        }
 
-
-		///////////////////////////
-		//// “Б’и•Пђ”ђЭ’иѓ‚Ѓ[ѓh ////
-		///////////////////////////
-		if(keyMode==5){
-			switch(ff[0]){
-				case '0':
-					kn=0;
-					goto dd2;
-				case '1':
-					kn=1;
-					goto dd2;
-				case '2':
-					kn=2;
-					goto dd2;
-				case '3':
-					kn=3;
-					goto dd2;
-				case '4':
-					kn=4;
-					goto dd2;
-				case '5':
-					kn=5;
-					goto dd2;
-				case '6':
-					kn=6;
-					goto dd2;
-				case '7':
-					kn=7;
-					goto dd2;
-				case '8':
-					kn=8;
-					goto dd2;
-				case '9':
-					kn=9;
-					goto dd2;
-				case '+':
-				case '-':
-					switch(kn){
-					case 0:dxi			+= ff[0]=='+'?	1:	-1;		break;
-					case 1:dyi			+= ff[0]=='+'?	1:	-1;		break;
-					case 2:swMax		+= ff[0]=='+'?	1:	-1;		break;
-					case 3:pitch_gyrg	+= ff[0]=='+'?	0.01:-0.01;	break;
-					case 4:roll_gyrg	+= ff[0]=='+'?	0.01:-0.01;	break;
-					case 5:fh			+= ff[0]=='+'?  1:  -1;		break;
-					case 6:fhMax		+= ff[0]=='+'?	1:  -1;		break;
-					case 7:walkCtLim	+= ff[0]=='+'?  1:  -1;		break;
-					case 8:autoH		+= ff[0]=='+'?  1:  -1;		break;
-					}
+        ///////////////////////////
+        //// Режим установки параметров ////
+        ///////////////////////////
+        if(keyMode==5){
+            switch(ff[0]){
+                case '0':
+                    kn=0;
+                    goto dd2;
+                case '1':
+                    kn=1;
+                    goto dd2;
+                case '2':
+                    kn=2;
+                    goto dd2;
+                case '3':
+                    kn=3;
+                    goto dd2;
+                case '4':
+                    kn=4;
+                    goto dd2;
+                case '5':
+                    kn=5;
+                    goto dd2;
+                case '6':
+                    kn=6;
+                    goto dd2;
+                case '7':
+                    kn=7;
+                    goto dd2;
+                case '8':
+                    kn=8;
+                    goto dd2;
+                case '9':
+                    kn=9;
+                    goto dd2;
+                case '+':
+                case '-':
+                    switch(kn){
+                    case 0:dxi          += ff[0]=='+'?  1:  -1;     break;
+                    case 1:dyi          += ff[0]=='+'?  1:  -1;     break;
+                    case 2:swMax        += ff[0]=='+'?  1:  -1;     break;
+                    case 3:pitch_gyrg   += ff[0]=='+'?  0.01:-0.01; break;
+                    case 4:roll_gyrg    += ff[0]=='+'?  0.01:-0.01; break;
+                    case 5:fh           += ff[0]=='+'?  1:  -1;     break;
+                    case 6:fhMax        += ff[0]=='+'?  1:  -1;     break;
+                    case 7:walkCtLim    += ff[0]=='+'?  1:  -1;     break;
+                    case 8:autoH        += ff[0]=='+'?  1:  -1;     break;
+                    }
 dd2:
-					sprintf( (char *)dsp, "No:%d\r\n0 dx:%d\r\n1 dy:%d\r\n2 sw:%d\r\n3 pg:%d\r\n4 rg:%d\r\n5 fh:%d\r\n6 fh%d\r\n7  wc%d\r\n8 aH:%d\r\n"
-						,kn 	,(int)dxi,(int)dyi,(int)swMax,(int)(pitch_gyrg*100),(int)(roll_gyrg*100),(int)fh,(int)fhMax,(int)walkCtLim,(int)autoH);
-					printS((char *)dsp);
-					break;
-			}
-		}
+                    sprintf( (char *)dsp, "No:%d\r\n0 dx:%d\r\n1 dy:%d\r\n2 sw:%d\r\n3 pg:%d\r\n4 rg:%d\r\n5 fh:%d\r\n6 fh%d\r\n7  wc%d\r\n8 aH:%d\r\n"
+                        ,kn     ,(int)dxi,(int)dyi,(int)swMax,(int)(pitch_gyrg*100),(int)(roll_gyrg*100),(int)fh,(int)fhMax,(int)walkCtLim,(int)autoH);
+                    printS((char *)dsp);
+                    break;
+            }
+        }
 
+        /////////////////////////
+        //// Режим сервоприводов ////
+        /////////////////////////
+        if(keyMode==2){         // Режим сервоприводов K
+            switch(ff[0]){
+                case '0':       // Выбор K0
+                    keyMode=20;
+                    break;
+                case '1':       // Выбор K1
+                    keyMode=21;
+                    break;
+                case '2':       // Выбор K2
+                    keyMode=22;
+                    break;
+            }
+        }
+        if(keyMode==3){         // Режим сервоприводов U
+            switch(ff[0]){
+                case '0':       // Выбор U0
+                    keyMode=30;
+                    break;
+                case '1':       // Выбор U1
+                    keyMode=31;
+                    break;
+                case '2':       // Выбор U2
+                    keyMode=32;
+                    break;
+            }
+        }
+        if(keyMode==4){         // Режим сервоприводов A
+            switch(ff[0]){
+                case '0':       // Выбор A0
+                    keyMode=40;
+                    break;
+                case '1':       // Выбор A1
+                    keyMode=41;
+                    break;
+            }
+        }
 
-		/////////////////////////
-		//// ѓTЃ[ѓ{ђЭ’иѓ‚Ѓ[ѓh ////
-		/////////////////////////
-		if(keyMode==2){			//ѓTЃ[ѓ{ KѓOѓ‹Ѓ[ѓv
-			switch(ff[0]){
-				case '0':		//K0‘I‘р
-					keyMode=20;
-					break;
-				case '1':		//K1‘I‘р
-					keyMode=21;
-					break;
-				case '2':		//K2‘I‘р
-					keyMode=22;
-					break;
-			}
-		}
-		if(keyMode==3){			//ѓTЃ[ѓ{ UѓOѓ‹Ѓ[ѓv
-			switch(ff[0]){
-				case '0':		//U0‘I‘р
-					keyMode=30;
-					break;
-				case '1':		//U1‘I‘р
-					keyMode=31;
-					break;
-				case '2':		//U2‘I‘р
-					keyMode=32;
-					break;
-			}
-		}
-		if(keyMode==4){			//ѓTЃ[ѓ{ AѓOѓ‹Ѓ[ѓv
-			switch(ff[0]){
-				case '0':		//A0‘I‘р
-					keyMode=40;
-					break;
-				case '1':		//A1‘I‘р
-					keyMode=41;
-					break;
-			}
-		}
+        if(keyMode>=20&&keyMode<=60){      // Режим сервоприводов K,U,A,H,E
+            switch(ff[0]){
+                case 'r':       // Правый сервопривод
+                    keyMode=keyMode*10;
+                    break;
+                case 'l':       // Левый сервопривод
+                    keyMode=keyMode*10+1;
+                    break;
+                case 'b':       // Оба сервопривода
+                    keyMode=keyMode*10+2;
+                    break;
+            }
+        }
 
-		if(keyMode>=20&&keyMode<=60){		//ѓTЃ[ѓ{ K,U,A,N,EѓOѓ‹Ѓ[ѓv
-			switch(ff[0]){
-				case 'r':		//K0‘I‘р
-					keyMode=keyMode*10;
-					break;
-				case 'l':		//K1‘I‘р
-					keyMode=keyMode*10+1;
-					break;
-				case 'b':		//K2‘I‘р
-					keyMode=keyMode*10+2;
-					break;
-			}
-		}
+        if(keyMode>=200&&keyMode<=800){       // Режим сервоприводов K,U,A,H,E
+            i=0;
+            if(ff[0]=='+')i= 30;
+            if(ff[0]=='-')i=-30;
+            if(ff[0]=='+'||ff[0]=='-'){
+                switch(keyMode){
+                case 200:   K0W[0]+=i;   break;
+                case 201:   K0W[1]+=i;   break;
+                case 202:   K0W[0]+=i;K0W[1]+=i;break;
+                case 210:   K1W[0]+=i;   break;
+                case 211:   K1W[1]+=i;   break;
+                case 212:   K1W[0]+=i;K1W[1]+=i;break;
+                case 220:   K2W[0]+=i;   break;
+                case 221:   K2W[1]+=i;   break;
+                case 222:   K2W[0]+=i;K2W[1]+=i;break;
 
-		if(keyMode>=200&&keyMode<=800){		//ѓTЃ[ѓ{ K,U,A,N,EѓOѓ‹Ѓ[ѓv
-			i=0;
-			if(ff[0]=='+')i= 30;
-			if(ff[0]=='-')i=-30;
-			if(ff[0]=='+'||ff[0]=='-'){
-				switch(keyMode){
-				case 200:	K0W[0]+=i;	break;
-				case 201:	K0W[1]+=i;	break;
-				case 202:	K0W[0]+=i;K0W[1]+=i;break;
-				case 210:	K1W[0]+=i;	break;
-				case 211:	K1W[1]+=i;	break;
-				case 212:	K1W[0]+=i;K1W[1]+=i;break;
-				case 220:	K2W[0]+=i;	break;
-				case 221:	K2W[1]+=i;	break;
-				case 222:	K2W[0]+=i;K2W[1]+=i;break;
+                case 300:   U0W[0]+=i;   break;
+                case 301:   U0W[1]+=i;   break;
+                case 302:   U0W[0]+=i;U0W[1]+=i;break;
+                case 310:   U1W[0]+=i;   break;
+                case 311:   U1W[1]+=i;   break;
+                case 312:   U1W[0]+=i;U1W[1]+=i;break;
+                case 320:   U2W[0]+=i;   break;
+                case 321:   U2W[1]+=i;   break;
+                case 322:   U2W[0]+=i;U2W[1]+=i;break;
 
-				case 300:	U0W[0]+=i;	break;
-				case 301:	U0W[1]+=i;	break;
-				case 302:	U0W[0]+=i;U0W[1]+=i;break;
-				case 310:	U1W[0]+=i;	break;
-				case 311:	U1W[1]+=i;	break;
-				case 312:	U1W[0]+=i;U1W[1]+=i;break;
-				case 320:	U2W[0]+=i;	break;
-				case 321:	U2W[1]+=i;	break;
-				case 322:	U2W[0]+=i;U2W[1]+=i;break;
+                case 400:   A0W[0]+=i;   break;
+                case 401:   A0W[1]+=i;   break;
+                case 402:   A0W[0]+=i;A0W[1]+=i;break;
+                case 410:   A1W[0]+=i;   break;
+                case 411:   A1W[1]+=i;   break;
+                case 412:   A1W[0]+=i;A1W[1]+=i;break;
 
-				case 400:	A0W[0]+=i;	break;
-				case 401:	A0W[1]+=i;	break;
-				case 402:	A0W[0]+=i;A0W[1]+=i;break;
-				case 410:	A1W[0]+=i;	break;
-				case 411:	A1W[1]+=i;	break;
-				case 412:	A1W[0]+=i;A1W[1]+=i;break;
+                case 500:   HW[0]+=i;    break;
+                case 501:   HW[1]+=i;    break;
+                case 502:   HW[0]+=i;HW[1]+=i;break;
 
-				case 500:	HW[0]+=i;	break;
-				case 501:	HW[1]+=i;	break;
-				case 502:	HW[0]+=i;HW[1]+=i;break;
+                case 600:   EW[0]+=i;    break;
+                case 601:   EW[1]+=i;    break;
+                case 602:   EW[0]+=i;EW[1]+=i;break;
 
-				case 600:	EW[0]+=i;	break;
-				case 601:	EW[1]+=i;	break;
-				case 602:	EW[0]+=i;EW[1]+=i;break;
+                case 700:   HEADW+=i;    break;
+                case 701:   HEADW+=i;    break;
 
-				case 700:	HEADW+=i;	break;
-				case 701:	HEADW+=i;	break;
-
-				case 800:	WESTW+=i;	break;
-				case 801:	WESTW+=i;	break;
-				}
-				sprintf( (char *)dsp,    "Mode=%d\r\n",modeNxt );
-				printS((char *)dsp);
-				sprintf( (char *)dsp,    "K0:%7d %7d K1:%7d %7d K2:%7d %7d \r\n",K0W[0],K0W[1],K1W[0],K1W[1],K2W[0],K2W[1] );
-				printS((char *)dsp);
-				sprintf( (char *)dsp,    "H:%7d %7d \r\n",HW[0] ,HW[1]  );
-				printS((char *)dsp);
-				sprintf( (char *)dsp,    "A0:%7d %7d A1:%7d %7d \r\n\r\n",A0W[0],A0W[1],A1W[0],A1W[1] );
-				printS((char *)dsp);
-				sprintf( (char *)dsp,    "U0:%7d %7d U1:%7d %7d U2:%7d %7d \r\n",U0W[0],U0W[1],U1W[0],U1W[1],U2W[0],U2W[1] );
-				printS((char *)dsp);
-				sprintf( (char *)dsp,    "E:%7d %7d \r\n\r\n",EW[0] ,EW[1]  );
-				printS((char *)dsp);
-				sprintf( (char *)dsp,    "HD:%7d WT:%7d \r\n",HEADW ,WESTW  );
-				printS((char *)dsp);
-			}
-		}
-	}
+                case 800:   WESTW+=i;    break;
+                case 801:   WESTW+=i;    break;
+                }
+                sprintf( (char *)dsp,    "Mode=%d\r\n",modeNxt );
+                printS((char *)dsp);
+                sprintf( (char *)dsp,    "K0:%7d %7d K1:%7d %7d K2:%7d %7d \r\n",K0W[0],K0W[1],K1W[0],K1W[1],K2W[0],K2W[1] );
+                printS((char *)dsp);
+                sprintf( (char *)dsp,    "H:%7d %7d \r\n",HW[0] ,HW[1]  );
+                printS((char *)dsp);
+                sprintf( (char *)dsp,    "A0:%7d %7d A1:%7d %7d \r\n\r\n",A0W[0],A0W[1],A1W[0],A1W[1] );
+                printS((char *)dsp);
+                sprintf( (char *)dsp,    "U0:%7d %7d U1:%7d %7d U2:%7d %7d \r\n",U0W[0],U0W[1],U1W[0],U1W[1],U2W[0],U2W[1] );
+                printS((char *)dsp);
+                sprintf( (char *)dsp,    "E:%7d %7d \r\n\r\n",EW[0] ,EW[1]  );
+                printS((char *)dsp);
+                sprintf( (char *)dsp,    "HD:%7d WT:%7d \r\n",HEADW ,WESTW  );
+                printS((char *)dsp);
+            }
+        }
+    }
 }
 
-
-
-
 // **************************************************************************
-// *************** Main routine *********************************************
+// *************** Главная программа *********************************************
 // **************************************************************************
 int main(void){
 
-	K0W[0]=0;			//ЊТЉЦђЯ‘OЊг•ыЊь‰EЏ‘Ќћ—p
-	K1W[0]=0;			//ЊТЉЦђЯ‰Ў•ыЊь‰EЏ‘Ќћ—p
-	K2W[0]=0;			//ЊТЉЦђЯ‰Ў•ыЊь‰EЏ‘Ќћ—p
-	HW [0]=0;			//•GЉЦђЯ‰EЏ‘Ќћ—p
-	A0W[0]=0;			//‘«ЋсЏг‰є•ыЊь‰EЏ‘Ќћ—p
-	A1W[0]=0;			//‘«Ћс‰Ў•ыЊь‰EЏ‘Ќћ—p
-	U0W[0]=-5400;			//ЊЁ‘OЊг•ыЊь‰EЏ‘Ќћ—p
-	U1W[0]=0;			//ЊЁ‰ЎЊг•ыЊь‰EЏ‘Ќћ—p
-	U2W[0]=0;			//ЊЁѓ€Ѓ[Њь‰EЏ‘Ќћ—p
-	 EW[0]=0;			//•I‰EЏ‘Ќћ—p
-	 WESTW=0;			//Ќ‰с“]Џ‘Ќћ—p
+    K0W[0]=0;           // Правый сервопривод коленного сустава K0
+    K1W[0]=0;           // Правый сервопривод коленного сустава K1
+    K2W[0]=0;           // Правый сервопривод коленного сустава K2
+    HW [0]=0;           // Правый сервопривод бедра H
+    A0W[0]=0;           // Правый сервопривод плечевого сустава A0
+    A1W[0]=0;           // Правый сервопривод плечевого сустава A1
+    U0W[0]=-5400;       // Правый сервопривод верхней части U0
+    U1W[0]=0;           // Правый сервопривод верхней части U1
+    U2W[0]=0;           // Правый сервопривод верхней части U2
+    EW[0]=0;            // Правый сервопривод стабилизации E
+    WESTW=0;            // Сервопривод поворота туловища
 
-	K0W[1]=0;			//ЊТЉЦђЯ‘OЊг•ыЊьЌ¶Џ‘Ќћ—p
-	K1W[1]=0;			//ЊТЉЦђЯ‰Ў•ыЊьЌ¶Џ‘Ќћ—p
-	K2W[1]=0;			//ЊТЉЦђЯ‰Ў•ыЊьЌ¶Џ‘Ќћ—p
-	HW [1]=0;			//•GЉЦђЯЌ¶Џ‘Ќћ—p
-	A0W[1]=0;			//‘«ЋсЏг‰є•ыЊьЌ¶Џ‘Ќћ—p
-	A1W[1]=0;			//‘«Ћс‰Ў•ыЊьЌ¶Џ‘Ќћ—p
-	U0W[1]=-5400;			//ЊЁ‘OЊг•ыЊьЌ¶Џ‘Ќћ—p
-	U1W[1]=0;			//ЊЁ‰ЎЊг•ыЊьЌ¶Џ‘Ќћ—p
-	U2W[1]=0;			//ЊЁѓ€Ѓ[ЊьЌ¶Џ‘Ќћ—p
-	 EW[1]=0;			//•IЌ¶Џ‘Ќћ—p
-	 HEADW=0;			//“Є‰с“]Џ‘Ќћ—p
+    K0W[1]=0;           // Левый сервопривод коленного сустава K0
+    K1W[1]=0;           // Левый сервопривод коленного сустава K1
+    K2W[1]=0;           // Левый сервопривод коленного сустава K2
+    HW [1]=0;           // Левый сервопривод бедра H
+    A0W[1]=0;           // Левый сервопривод плечевого сустава A0
+    A1W[1]=0;           // Левый сервопривод плечевого сустава A1
+    U0W[1]=-5400;       // Левый сервопривод верхней части U0
+    U1W[1]=0;           // Левый сервопривод верхней части U1
+    U2W[1]=0;           // Левый сервопривод верхней части U2
+    EW[1]=0;            // Левый сервопривод стабилизации E
+    HEADW=0;            // Сервопривод поворота головы
 
+    ///////////////////////
+    //// Инициализация таймера ////
+    ///////////////////////
+    timer_init(TIMER, TIMER_MODE_TIMER32, 1000000); // Таймер на 1 секунду
+    delay(500); // Задержка 500ms
 
-	///////////////////////
-	//// ѓ^ѓCѓ}‚МЏ‰Љъ‰» ////
-	///////////////////////
-	timer_init(TIMER, TIMER_MODE_TIMER32, 1000000);//Ћж‚иЉё‚¦‚ёЋьЉъ‚P•b‚ЙђЭ’и
-	delay(500);//wait 500ms ‚±‚МЋћЉФ‘Т‚Ѕ‚И‚ў‚Жѓ_ѓЃ
+    ///////////////////
+    //// Инициализация PIO ////
+    ///////////////////
+    pio_init(PIO_LED1, PIO_SET_OUT); // PIO(LED1) как выход
+    pio_init(PIO_LED2, PIO_SET_OUT); // PIO(LED2) как выход
+    pio_init(PIO_T1, PIO_SET_IN);    // PIO(T1) как вход
+    pio_init(PIO_T2, PIO_SET_OUT);   // PIO(T2) как выход
+    pio_init(PIO_T3, PIO_SET_IN);    // PIO(T3) как вход
+    pio_init(PIO_T4, PIO_SET_IN);    // PIO(T4) как вход
+    pio_init(PIO_T5, PIO_SET_OUT);   // PIO(T5) как выход
+    pio_init(PIO_T6, PIO_SET_OUT);   // PIO(T6) как выход
+    pio_init(PIO_SW1, PIO_SET_IN);   // PIO(SW1) как вход
+    pio_init(PIO_SW2, PIO_SET_IN);   // PIO(SW2) как вход
+    pio_write (PIO_LED2, HIGH);      // Светодиод выключен
 
+    /////////////////////////////
+    //// Инициализация последовательного порта ////
+    /////////////////////////////
+    uart_init(UART_COM, UART, BR115200, 8, PARITY_NONE);
+    i2c_init ( 400000, I2C_MASTER );
 
-	///////////////////
-	//// PIOЏ‰Љъ‰» ////
-	///////////////////
-	pio_init(PIO_LED1, PIO_SET_OUT);// PIO(LED1)‚рЏo—Н‚ЙђЭ’и
-	pio_init(PIO_LED2, PIO_SET_OUT);// PIO(LED2)‚рЏo—Н‚ЙђЭ’и
-	pio_init(PIO_T1, PIO_SET_IN);	// PIO(T1)‚р“ь—Н‚ЙђЭ’и
-	pio_init(PIO_T2, PIO_SET_OUT);	// PIO(T2)‚рЏo—Н‚ЙђЭ’и
-	pio_init(PIO_T3, PIO_SET_IN);	// PIO(T3)‚р“ь—Н‚ЙђЭ’и
-	pio_init(PIO_T4, PIO_SET_IN);	// PIO(T4)‚р“ь—Н‚ЙђЭ’и
-	pio_init(PIO_T5, PIO_SET_OUT);	// PIO(T5)‚рЏo—Н‚ЙђЭ’и
-	pio_init(PIO_T6, PIO_SET_OUT);	// PIO(T6)‚рЏo—Н‚ЙђЭ’и
-	pio_init(PIO_SW1, PIO_SET_IN);	// PIO(SW1)‚р“ь—Н‚ЙђЭ’и
-	pio_init(PIO_SW2, PIO_SET_IN);	// PIO(SW2)‚р“ь—Н‚ЙђЭ’и
-	pio_write (PIO_LED2, HIGH);		// —О OFF
+    sio_init (UART_SIO1, BR1250000); // Инициализация SIO
+    sio_init (UART_SIO2, BR1250000); // Инициализация SIO
+    sio_init (UART_SIO3, BR1250000); // Инициализация SIO
+    sio_init (UART_SIO4, BR1250000); // Инициализация SIO
 
+    /////////////////////////////
+    //// Инициализация АЦП/ЦАП ////
+    /////////////////////////////
+    ad_init(PIO_AD1, SWEEP);     // Инициализация АЦП канал 1
+    ad_init(PIO_AD2, SWEEP);     // Инициализация АЦП канал 2
+    dac_init();                  // Инициализация ЦАП
 
-	/////////////////////////////
-	//// ѓVѓЉѓAѓ‹ѓ|Ѓ[ѓgЏ‰Љъ‰» ////
-	/////////////////////////////
-	uart_init(UART_COM, UART, BR115200, 8, PARITY_NONE);
-	i2c_init ( 400000, I2C_MASTER );
+    ////////////////////////
+    //// Вывод информации о версии ////
+    ////////////////////////
+    sprintf((char *)dsp,"Version: %s %s\r\n", __DATE__, __TIME__);
+    printS((char *)dsp);
 
-	sio_init (UART_SIO1, BR1250000);	// SIO‚МЏ‰Љъ‰»
-	sio_init (UART_SIO2, BR1250000);	// SIO‚МЏ‰Љъ‰»
-	sio_init (UART_SIO3, BR1250000);	// SIO‚МЏ‰Љъ‰»
-	sio_init (UART_SIO4, BR1250000);	// SIO‚МЏ‰Љъ‰»
+    /////////////////////////
+    //// Инициализация BMO055 ////
+    /////////////////////////
+    //// Проверка правильности устройства ////
+    if(read8(0) !=0xA0 ){       // BNO055_ID
+        delay(1000);            // Ожидание загрузки
+        if(read8(0) !=0xA0 ){   // BNO055_ID
+            printS("*** NG1 ***\r\n");
+            return false;       // Ошибка инициализации
+        }
+    }
+    //// Переключение в режим конфигурации ////
+    write8(0X3D, 0);            // BNO055_OPR_MODE_ADDR // OPERATION_MODE_CONFIG
+    delay(30);
+    //// Сброс ////
+    write8(0X3F, 0x20);         // BNO055_SYS_TRIGGER_ADDR
+    delay(500);
+    while (read8(0) != 0xA0){   // BNO055_CHIP_ID_ADDR // BNO055_ID
+        delay(1000);            // Ожидание загрузки
+        if(read8(0) != 0xA0 ){          // BNO055_ID
+            printS("*** NG2 ***\r\n");
+            return false;       // Ошибка инициализации
+        }
+    }
+    delay(50);
+    //// Установка нормального режима питания ////
+    write8(0X3E, 0X00);         // BNO055_PWR_MODE_ADDR // POWER_MODE_NORMAL
+    delay(10);
+    write8(0X07, 0);            // BNO055_PAGE_ID_ADDR
+    write8(0X3F, 0);            // BNO055_SYS_TRIGGER_ADDR
+    delay(10);
+    //// Установка требуемого режима работы ////
+    //  _mode = 0X0C;         // OPERATION_MODE_NDOF
+    write8(0X3D, 0X0C);         // BNO055_OPR_MODE_ADDR // mode
+    delay(1000);
+    //// Использование внешнего кристалла для лучшей точности ////
+    write8(0X3D, 0);            // BNO055_OPR_MODE_ADDR // OPERATION_MODE_CONFIG
+    delay(50);
+    write8(0X07, 0);            // BNO055_PAGE_ID_ADDR
+    write8(0x0, 0x80);          // BNO055_SYS_TRIGGER_ADDR
+    delay(10);
+    //// Установка требуемого режима работы ////
+    write8(0X3D, 0X0C);         // BNO055_OPR_MODE_ADDR // modeback
+    delay(50);
+    printS("*** BNO055 INIT OK ***\r\n");
 
+    /////////////////////////////
+    //// Калибровка сервоприводов ////
+    /////////////////////////////
+    i=ics_set_pos ( UART_SIO2, 1, 0 );  // Калибровка U0R
+    U0W[0]=-i+4735;
+    i=ics_set_pos ( UART_SIO2, 2, 0 );  // Калибровка U1R +2700
+    U1W[0]=-i+10110;
+    i=ics_set_pos ( UART_SIO2, 3, 0 );  // Калибровка U2R
+    U2W[0]=-i+7500;
+    i=ics_set_pos ( UART_SIO2, 4, 0 );  // Калибровка ER
+    EW [0]=i-4800;
+    i=ics_set_pos ( UART_SIO4, 1, 0 );  // Калибровка U0L
+    U0W[1]=i-9320;
+    i=ics_set_pos ( UART_SIO4, 2, 0 );  // Калибровка U1L -2700
+    U1W[1]=i-4850;
+    i=ics_set_pos ( UART_SIO4, 3, 0 );  // Калибровка U2L
+    U2W[1]=i-7500;
+    i=ics_set_pos ( UART_SIO4, 4, 0 );  // Калибровка EL
+    EW [1]=-i+10150;
+    i=ics_set_pos ( UART_SIO1, 5, 0 );  // Калибровка K2R
+    K2W[0]=-i+7500;
+    i=ics_set_pos ( UART_SIO1, 6, 0 );  // Калибровка K1R
+    K1W[0]=-i+7470;
+    i=ics_set_pos ( UART_SIO1, 7, 0 );  // Калибровка K0R
+    K0W[0]=-i+7500;
+    i=ics_set_pos ( UART_SIO1, 8, 0 );  // Калибровка HR +1760
+    HW [0]=-i+9260;
+    i=ics_set_pos ( UART_SIO1, 9, 0 );  // Калибровка A0R +350
+    A0W[0]=i-7910;
+    i=ics_set_pos ( UART_SIO1,10, 0 );  // Калибровка A1R
+    A1W[0]=i-7585;
+    i=ics_set_pos ( UART_SIO3, 5, 0 );  // Калибровка K2L
+    K2W[1]=i-7500;
+    i=ics_set_pos ( UART_SIO3, 6, 0 );  // Калибровка K1L
+    K1W[1]=i-7500;
+    i=ics_set_pos ( UART_SIO3, 7, 0 );  // Калибровка K0L
+    K0W[1]=i-7500;
+    i=ics_set_pos ( UART_SIO3, 8, 0 );  // Калибровка HL -1760
+    HW [1]=i-5740;
+    i=ics_set_pos ( UART_SIO3, 9, 0 );  // Калибровка A0L -350
+    A0W[1]=-i+7100;
+    i=ics_set_pos ( UART_SIO3,10, 0 );  // Калибровка A1L
+    A1W[1]=-i+7530;
+    i=ics_set_pos ( UART_SIO4, 0, 0 );  // Калибровка HEADL
+    HEADW=i-7500;
+    i=ics_set_pos ( UART_SIO2, 0, 0 );  // Калибровка WESTR
+    WESTW=i-7500;
 
-	/////////////////////////////
-	//// ѓAѓiѓЌѓOѓ|Ѓ[ѓgЏ‰Љъ‰» ////
-	/////////////////////////////
-	ad_init(PIO_AD1, SWEEP);		//ѓAѓiѓЌѓOѓ|Ѓ[ѓg‚PђЭ’и
-	ad_init(PIO_AD2, SWEEP);		//ѓAѓiѓЌѓOѓ|Ѓ[ѓg‚QђЭ’и
-	dac_init();						//ѓAѓiѓЌѓOЏo—НђЭ’и
+    /////////////////////////////
+    //// Настройка параметров сервоприводов ////
+    /////////////////////////////
+//  ics_set_param ( UART_SIO1, 7,ICS_STRC_SC,250);   // K0R
+//  ics_set_param ( UART_SIO3, 7,ICS_STRC_SC,250);   // K0L
 
+    ics_set_param ( UART_SIO2, 1,ICS_STRC_SC,20);    // U0R
+    ics_set_param ( UART_SIO4, 1,ICS_STRC_SC,20);    // U0L
 
-	////////////////////////
-	//// ЌXђV“ъЋћ‚р•\Ћ¦ ////
-	////////////////////////
-	sprintf((char *)dsp,"Version: %s %s\r\n", __DATE__, __TIME__);
-	printS((char *)dsp);
+    ics_set_param ( UART_SIO2, 2,ICS_STRC_SC,20);    // U1R
+    ics_set_param ( UART_SIO4, 2,ICS_STRC_SC,20);    // U1L
 
+    ics_set_param ( UART_SIO2, 4,ICS_STRC_SC,20);    // ER
+    ics_set_param ( UART_SIO4, 4,ICS_STRC_SC,20);    // EL
 
-	/////////////////////////
-	//// BMO055 ЉJЋnЏ€—ќ ////
-	/////////////////////////
-	//// Make sure we have the right device ////
-	if(read8(0) !=0xA0 ){		// BNO055_ID
-		delay(1000);			// hold on for boot
-		if(read8(0) !=0xA0 ){	// BNO055_ID
-			printS("*** NG1 ***\r\n");
-			return false;		// still not? ok bail
-		}
-	}
-	//// Switch to config mode (just in case since this is the default) ////
-	write8(0X3D, 0);			//BNO055_OPR_MODE_ADDR  //OPERATION_MODE_CONFIG
-	delay(30);
-	//// Reset ////
-	write8(0X3F, 0x20);			//BNO055_SYS_TRIGGER_ADDR
-	delay(500);
-	while (read8(0) != 0xA0){	//BNO055_CHIP_ID_ADDR  //BNO055_ID
-		delay(1000);			// hold on for boot
-		if(read8(0) != 0xA0 ){			// BNO055_ID
-			printS("*** NG2 ***\r\n");
-			return false;		// still not? ok bail
-		}
-	}
-	delay(50);
-	//// Set to normal power mode ////
-	write8(0X3E, 0X00);			//BNO055_PWR_MODE_ADDR  //POWER_MODE_NORMAL
-	delay(10);
-	write8(0X07, 0);			//BNO055_PAGE_ID_ADDR
-	write8(0X3F, 0);			//BNO055_SYS_TRIGGER_ADDR
-	delay(10);
-	//// Set the requested operating mode (see section 3.3) ////
-	//  _mode = 0X0C;			//OPERATION_MODE_NDOF
-	write8(0X3D, 0X0C);			//BNO055_OPR_MODE_ADDR  //mode
-	delay(1000);
-	//// Use external crystal for better accuracy ////
-	write8(0X3D, 0);			//BNO055_OPR_MODE_ADDR  //OPERATION_MODE_CONFIG
-	delay(50);
-	write8(0X07, 0);			//BNO055_PAGE_ID_ADDR
-	write8(0x0, 0x80);			//BNO055_SYS_TRIGGER_ADDR
-	delay(10);
-	//// Set the requested operating mode (see section 3.3) ////
-	write8(0X3D, 0X0C);			//BNO055_OPR_MODE_ADDR  //modeback
-	delay(50);
-	printS("*** BNO055 INIT OK ***\r\n");
+    ////////////////////////
+    //// Запуск 10ms таймера ////
+    ////////////////////////
+    timer_write(TIMER,1000000);
+    timer_start(TIMER);
 
+    ////////////////////
+    //// Инициализация переменных ////
+    ////////////////////
 
-	/////////////////////////////
-	//// ѓTЃ[ѓ{Њ»ЌЭЉp“x ////
-	/////////////////////////////
-	i=ics_set_pos ( UART_SIO2, 1, 0 );	//U0Rѓoѓ“ѓUѓC€К’u
-	U0W[0]=-i+4735;
-	i=ics_set_pos ( UART_SIO2, 2, 0 );	//U1R +2700
-	U1W[0]=-i+10110;
-	i=ics_set_pos ( UART_SIO2, 3, 0 );	//U2R
-	U2W[0]=-i+7500;
-	i=ics_set_pos ( UART_SIO2, 4, 0 );	//ER
-	EW [0]=i-4800;
-	i=ics_set_pos ( UART_SIO4, 1, 0 );	//U0Lѓoѓ“ѓUѓC€К’u
-	U0W[1]=i-9320;
-	i=ics_set_pos ( UART_SIO4, 2, 0 );	//U1L -2700
-	U1W[1]=i-4850;
-	i=ics_set_pos ( UART_SIO4, 3, 0 );	//U2L
-	U2W[1]=i-7500;
-	i=ics_set_pos ( UART_SIO4, 4, 0 );	//EL
-	EW [1]=-i+10150;
-	i=ics_set_pos ( UART_SIO1, 5, 0 );	//K2R
-	K2W[0]=-i+7500;
-	i=ics_set_pos ( UART_SIO1, 6, 0 );	//K1R
-	K1W[0]=-i+7470;
-	i=ics_set_pos ( UART_SIO1, 7, 0 );	//K0R
-	K0W[0]=-i+7500;
-	i=ics_set_pos ( UART_SIO1, 8, 0 );	//HR +1760
-	HW [0]=-i+9260;
-	i=ics_set_pos ( UART_SIO1, 9, 0 );	//A0R +350
-	A0W[0]=i-7910;
-	i=ics_set_pos ( UART_SIO1,10, 0 );	//A1R
-	A1W[0]=i-7585;
-	i=ics_set_pos ( UART_SIO3, 5, 0 );	//K2L
-	K2W[1]=i-7500;
-	i=ics_set_pos ( UART_SIO3, 6, 0 );	//K1L
-	K1W[1]=i-7500;
-	i=ics_set_pos ( UART_SIO3, 7, 0 );	//K0L
-	K0W[1]=i-7500;
-	i=ics_set_pos ( UART_SIO3, 8, 0 );	//HL -1760
-	HW [1]=i-5740;
-	i=ics_set_pos ( UART_SIO3, 9, 0 );	//A0L -350
-	A0W[1]=-i+7100;
-	i=ics_set_pos ( UART_SIO3,10, 0 );	//A1L
-	A1W[1]=-i+7530;
-	i=ics_set_pos ( UART_SIO4, 0, 0 );	//HEADL
-	HEADW=i-7500;
-	i=ics_set_pos ( UART_SIO2, 0, 0 );	//WESTR
-	WESTW=i-7500;
+    LEDct=0;    // Счетчик мигания светодиода
 
+    tBak=0;
+    pitchi=0;
+    tNow=0;
 
-	/////////////////////////////
-	//// ѓTЃ[ѓ{ѓXѓgѓЊѓbѓ`ђЭ’и ////
-	/////////////////////////////
-//	ics_set_param ( UART_SIO1, 7,ICS_STRC_SC,250);	//K0R
-//	ics_set_param ( UART_SIO3, 7,ICS_STRC_SC,250);	//K0L
+    p_ofs=0;
+    r_ofs=0;
+    ir=0;
+    ip=0;
+    irb=0;
+    ipb=0;
 
-	ics_set_param ( UART_SIO2, 1,ICS_STRC_SC,20);	//U0R
-	ics_set_param ( UART_SIO4, 1,ICS_STRC_SC,20);	//U0L
+    kn=0;
 
-	ics_set_param ( UART_SIO2, 2,ICS_STRC_SC,20);	//U1R
-	ics_set_param ( UART_SIO4, 2,ICS_STRC_SC,20);	//U1L
+    motCt=100;
+    keyMode=0;
+    cycle=10000;
+    mode=710;
+    pitch_gyrg=0.08;
+    roll_gyrg=0.1;
 
-	ics_set_param ( UART_SIO2, 4,ICS_STRC_SC,20);	//ER
-	ics_set_param ( UART_SIO4, 4,ICS_STRC_SC,20);	//EL
-
-
-	////////////////////////
-	//// 10msѓ^ѓCѓ}ЉJЋn ////
-	////////////////////////
-	timer_write(TIMER,1000000);
-	timer_start(TIMER);
-
-
-	////////////////////
-	//// •Пђ”Џ‰Љъ‰» ////
-	////////////////////
-
-	LEDct=0;	//LED“_“”ѓJѓEѓ“ѓ^
-
-	tBak=0;
-	pitchi=0;
-	tNow=0;
-
-	p_ofs=0;
-	r_ofs=0;
-	ir=0;
-	ip=0;
-	irb=0;
-	ipb=0;
-
-	kn=0;
-
-	motCt=100;
-	keyMode=0;
-	cycle=10000;
-	mode=710;
-	pitch_gyrg=0.08;
-	roll_gyrg=0.1;
-
-	swMax=25;//22
-	fhMax=35;
-	walkCtLim=3;
-
-
+    swMax=25; // 22
+    fhMax=35;
+    walkCtLim=3;
 
 //----------------------------------------------------------------------------------
-	////////////////////////////////////////////////
-	//////////////////  MAIN LOOP  /////////////////
-	////////////////////////////////////////////////
+    ////////////////////////////////////////////////
+    //////////////////  ОСНОВНОЙ ЦИКЛ  /////////////////
+    ////////////////////////////////////////////////
 top:
-	//////////////////////
-	//// 10ms‘Т‚їЏ€—ќ ////
-	//////////////////////
-pio_write (PIO_T2, HIGH);	//OFF(waitЋћЉФЉm”F)
+    //////////////////////
+    //// Ожидание 10ms ////
+    //////////////////////
+pio_write (PIO_T2, HIGH);   // ВЫКЛ (подтверждение времени ожидания)
 
-	do{
-		tNow=timer_read(TIMER);
-	}while(tNow<cycle);
+    do{
+        tNow=timer_read(TIMER);
+    }while(tNow<cycle);
 
-	if(tNow>cycle+10){
-		sprintf( (char *)dsp,"************** %d \r\n",(int)tNow);
-		printS ( (char *)dsp );
-	}
-	timer_start(TIMER);
+    if(tNow>cycle+10){
+        sprintf( (char *)dsp,"************** %d \r\n",(int)tNow);
+        printS ( (char *)dsp );
+    }
+    timer_start(TIMER);
 
+    ////////////////////
+    //// Управление сервоприводами ////
+    ////////////////////
 
-	////////////////////
-	//// ѓTЃ[ѓ{ђЭ’и ////
-	////////////////////
+    //// Ограничения углов сервоприводов ////
+    if(K1W[0]> 800)K1W[0]   = 800;
+    if(K1W[0]<-450)K1W[0]   =-450;
+    if(K1W[1]> 800)K1W[1]   = 800;
+    if(K1W[1]<-450)K1W[1]   =-450;
+    if(A0W[0]> 3500)A0W[0]  = 3500;
+    if(A0W[0]<-3500)A0W[0]  =-3500;
+    if(A0W[1]> 3500)A0W[1]  = 3500;
+    if(A0W[1]<-3500)A0W[1]  =-3500;
+    if(A1W[0]> 420)A1W[0]   = 420;   // Учитывая момент инерции + демпфирование
+    if(A1W[0]<-900)A1W[0]   =-900;   // Учитывая момент инерции + демпфирование
+    if(A1W[1]> 420)A1W[1]   = 420;   // Учитывая момент инерции + демпфирование
+    if(A1W[1]<-900)A1W[1]   =-900;   // Учитывая момент инерции + демпфирование
 
-	//// ЉЦђЯѓЉѓ~ѓbѓg ////
-	if(K1W[0]> 800)K1W[0]	= 800;
-	if(K1W[0]<-450)K1W[0]	=-450;
-	if(K1W[1]> 800)K1W[1]	= 800;
-	if(K1W[1]<-450)K1W[1]	=-450;
-	if(A0W[0]> 3500)A0W[0]	= 3500;
-	if(A0W[0]<-3500)A0W[0]	=-3500;
-	if(A0W[1]> 3500)A0W[1]	= 3500;
-	if(A0W[1]<-3500)A0W[1]	=-3500;
-	if(A1W[0]> 420)A1W[0]	= 420;	//“Y•t•i‹И‰БЌH+ѓAѓ‹ѓ~ѓ\Ѓ[ѓ‹‚Е‚МЋАЊ±Њ‹‰К
-	if(A1W[0]<-900)A1W[0]	=-900;	//“Y•t•i‹И‰БЌH+ѓAѓ‹ѓ~ѓ\Ѓ[ѓ‹‚Е‚МЋАЊ±Њ‹‰К
-	if(A1W[1]> 420)A1W[1]	= 420;	//“Y•t•i‹И‰БЌH+ѓAѓ‹ѓ~ѓ\Ѓ[ѓ‹‚Е‚МЋАЊ±Њ‹‰К
-	if(A1W[1]<-900)A1W[1]	=-900;	//“Y•t•i‹И‰БЌH+ѓAѓ‹ѓ~ѓ\Ѓ[ѓ‹‚Е‚МЋАЊ±Њ‹‰К
+    //// Передача данных на сервоприводы ////
+    //// Максимальные данные сервопривода 10500, иначе сервопривод перегревается
+    //// Минимальные данные сервопривода 3600, иначе не работает
 
-	//// ICSѓfЃ[ѓ^‘—ЋуђM ////
-	//// ’Ќ€Уѓ|ѓWѓVѓ‡ѓ“ѓfЃ[ѓ^‚Є10500‚р’ґ‚¦‚й‚ЖѓTЃ[ѓ{‚Є‰ћ“љ‚µ‚И‚ўЃiЉФЊ‡”Ѕ‰ћЃj
-	//// ’Ќ€Уѓ|ѓWѓVѓ‡ѓ“ѓfЃ[ѓ^‚Є 3600€И‰є‚Е‚Н”Ѕ‰ћ‚Н‚·‚й‚Є“®‚©‚И‚ў
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO1, 5, 7560 -(K2W[0])-60 );  // K2R
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K2R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO1, 5, 7560 -(K2W[0])-60 );	//K2R
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K2R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ii=ics_set_pos ( UART_SIO2, 1, 4735 -(U0W[0]) ); // U0R
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U0R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    U0R=-(ii-4735);
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ii=ics_set_pos ( UART_SIO2, 1, 4735 -(U0W[0]) );	//U0Rѓoѓ“ѓUѓC€К’u
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U0R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
-	U0R=-(ii-4735);
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO3, 5, 7500 +(K2W[1])-90 );  // K2L
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K2L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO3, 5, 7500 +(K2W[1])-90 );	//K2L
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K2L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ii=ics_set_pos ( UART_SIO4, 1, 9320 +(U0W[1])-60 );  // U0L
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U0L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    U0L=(ii-9230);
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ii=ics_set_pos ( UART_SIO4, 1, 9320 +(U0W[1])-60 );	//U0Lѓoѓ“ѓUѓC€К’u
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U0L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
-	U0L=(ii-9230);
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO1, 6, 7470 -(K1W[0])-30 );  // K1R
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K1R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO1, 6, 7470 -(K1W[0])-30 );	//K1R
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K1R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ii=ics_set_pos ( UART_SIO2, 2,10110 -(U1W[0]) ); // U1R +2700
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U1R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    U1R=-(ii-10110);
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ii=ics_set_pos ( UART_SIO2, 2,10110 -(U1W[0]) );	//U1R +2700
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U1R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
-	U1R=-(ii-10110);
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO3, 6, 7650 +(K1W[1])-90 );  // K1L
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K1L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO3, 6, 7650 +(K1W[1])-90 );//K1L
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K1L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ii=ics_set_pos ( UART_SIO4, 2, 4850 +(U1W[1]) ); // U1L -2700
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U1L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    U1L=ii-4850;
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ii=ics_set_pos ( UART_SIO4, 2, 4850 +(U1W[1]) );	//U1L -2700
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U1L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
-	U1L=ii-4850;
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ii=ics_set_pos ( UART_SIO1, 7, 7480 -(K0W[0])-30 );  // K0R
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K0R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    K0R=7510-ii;
 
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ics_set_pos    ( UART_SIO2, 3, 7500 -(U2W[0]) ); // U2R
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U2R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ii=ics_set_pos ( UART_SIO1, 7, 7480 -(K0W[0])-30 );	//K0R
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K0R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
-	K0R=7510-ii;
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ii=ics_set_pos ( UART_SIO3, 7, 7500 +(K0W[1]) ); // K0L
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K0L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    K0L=ii-7500;
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ics_set_pos    ( UART_SIO2, 3, 7500 -(U2W[0]) );	//U2R
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U2R**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ics_set_pos    ( UART_SIO4, 3, 7500 +(U2W[1]) ); // U2L
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U2L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ii=ics_set_pos ( UART_SIO3, 7, 7500 +(K0W[1]) );	//K0L
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"K0L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
-	K0L=ii-7500;
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO1, 8, 9320 -(HW [0]) ); // HR +1760
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"HR**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ics_set_pos    ( UART_SIO4, 3, 7500 +(U2W[1]) );	//U2L
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"U2L**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ics_set_pos    ( UART_SIO2, 4, 4800 +(EW [0]+i) );   // ER
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"ER**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO1, 8, 9320 -(HW [0]) );	//HR +1760
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"HR**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO3, 8, 5770 +(HW [1])-120 ); // HL -1760
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"HL**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ics_set_pos    ( UART_SIO2, 4, 4800 +(EW [0]+i) );	//ER
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"ER**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+     ics_set_pos    ( UART_SIO4, 4,10150 -(EW [1]+i) );   // EL
+    tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"EL**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
 
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO3, 8, 5770 +(HW [1])-120 );	//HL -1760
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"HL**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    i=pitch_gyrg*pitch_gyr;
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO1, 9, 7870-10 +(A0W[0]) + i+60 );   // A0R
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ics_set_pos    ( UART_SIO4, 4,10150 -(EW [1]+i) );	//EL
-	tNow=timer_read(TIMER);if(tNow>10010){sprintf( (char *)dsp,"EL**** %d \r\n",(int)tNow);printS ( (char *)dsp );}
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ics_set_pos    ( UART_SIO2, 0, 7500 +(WESTW ) );         // WESTR
 
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO3, 9, 7100    -(A0W[1]) - i ); // A0L
 
-	i=pitch_gyrg*pitch_gyr;
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO1, 9, 7870-10 +(A0W[0]) + i+60 );	//A0R
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ics_set_pos    ( UART_SIO4, 0, 7500 +(HEADW ) );         // HEADL
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ics_set_pos    ( UART_SIO2, 0, 7500 +(WESTW ) );			//WESTR
+    i=roll_gyrg*roll_gyr;
+    pio_write (PIO_T2, LOW );    // ВКЛ
+    ics_set_pos    ( UART_SIO1,10, 7470 +(A1W[0]) - i-30 );     // A1R
 
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO3, 9, 7100    -(A0W[1]) - i );	//A0L
+    pio_write (PIO_T2, HIGH);    // ВЫКЛ
+    ics_set_pos    ( UART_SIO3,10, 7560 -(A1W[1]) - i-60 );     // A1L
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ics_set_pos    ( UART_SIO4, 0, 7500 +(HEADW ) );			//HEADL
+    /////////////////////
+    //// Чтение данных IMU ////
+    /////////////////////
+    //      +----------+
+    //      |         *| RST   PITCH  ROLL  HEADING
+    //  ADR |*        *| SCL
+    //  INT |*        *| SDA     ^            /->
+    //  PS1 |*        *| GND     |            |
+    //  PS0 |*        *| 3VO     Y    Z-->    \-X
+    //      |         *| VIN
+    //      +----------+
 
-	i=roll_gyrg*roll_gyr;
-	pio_write (PIO_T2, LOW );	//ON
-	ics_set_pos    ( UART_SIO1,10, 7470 +(A1W[0]) - i-30 );		//A1R
+    // Ориентация 2020/2/6    roll: наклон вправо (2879) наклон влево (-2879) центр 2879
+    //                  pitch: наклон вперед (+) наклон назад (-) корректировка 20
 
-	pio_write (PIO_T2, HIGH);	//OFF
-	ics_set_pos    ( UART_SIO3,10, 7560 -(A1W[1]) - i-60 );		//A1L
+    readLen(0X1A, 6);   // Чтение абсолютных углов (в градусах * 16)
+    yaw      = ((int16_t)ff[0]) | (((int16_t)ff[1]) << 8); // Поворот вправо +
+    pitchs = ((int16_t)ff[2]) | (((int16_t)ff[3]) << 8); // Наклон вперед -
+    rolls  = ((int16_t)ff[4]) | (((int16_t)ff[5]) << 8); // Наклон вправо +
+    if(rolls>0) rolls= 2879-rolls;
+    else        rolls=-2879-rolls;
 
+    pitchs -= p_ofs;    // Коррекция
+    rolls  -= r_ofs;    // Коррекция
 
-	/////////////////////
-	//// IMU“ЗЋжЏ€—ќ ////
-	/////////////////////
-	//      +----------+
-	//      |         *| RST   PITCH  ROLL  HEADING
-	//  ADR |*        *| SCL
-	//  INT |*        *| SDA     ^            /->
-	//  PS1 |*        *| GND     |            |
-	//  PS0 |*        *| 3VO     Y    Z-->    \-X
-	//      |         *| VIN
-	//      +----------+
+    pitch = (float)pitchs*(M_PI/(180.0*16.0));  // Преобразование в радианы
+    roll  = (float)rolls *(M_PI/(180.0*16.0));  // Преобразование в радианы
 
-	//Њ»ЏуЃ@2020 2/6    roll : ‰E‘¤ЊX‚«Ѓi2879Ѓj Ќ¶‘¤ЊX‚«Ѓi-2879Ѓjи‡’l2879
-	//                  pitch: ‘O‘¤ЊX‚«Ѓi+Ѓj    Њг‘¤ЊX‚«Ѓi-Ѓj    •вђі’l20
+    readLen(0X14, 6);   // Чтение угловых скоростей (roll и yaw поменяны местами)
+    roll_gyr    = ((int16_t)ff[0]) | (((int16_t)ff[1]) << 8);    // Наклон вправо +
+    pitch_gyr   = ((int16_t)ff[2]) | (((int16_t)ff[3]) << 8);    // Наклон вперед |
+    yaw_gyr     = ((int16_t)ff[4]) | (((int16_t)ff[5]) << 8);    // Поворот вправо +
 
-	readLen(0X1A, 6);	//ђв‘ОЉp“x“ЗЌћ(deg‚М16”{•\Ћ¦)
-	yaw	   = ((int16_t)ff[0]) | (((int16_t)ff[1]) << 8); //’ј—§‰E‰с“]‚Е +
-	pitchs = ((int16_t)ff[2]) | (((int16_t)ff[3]) << 8); //’ј—§‘OЊX‚Е   -
-	rolls  = ((int16_t)ff[4]) | (((int16_t)ff[5]) << 8); //’ј—§‰EЊXЋО‚Е +
-	if(rolls>0)	rolls= 2879-rolls;
-	else		rolls=-2879-rolls;
+    pio_write (PIO_T2, LOW );    // ВКЛ
 
-	pitchs -= p_ofs;	//•вђі
-	rolls  -= r_ofs;	//•вђі
+    keyCont();
 
-	pitch = (float)pitchs*(M_PI/(180.0*16.0));	//rad‚Й•ПЉ·
-	roll  = (float)rolls *(M_PI/(180.0*16.0));	//rad‚Й•ПЉ·
+    walk();
 
+    ///////////////
+    //// Индикатор LED ////
+    ///////////////
+    ++LEDct;
+    if( LEDct > 100 )LEDct = -100;               // IMU готов
 
-	readLen(0X14, 6);	//Љp‘¬“x“ЗЌћ Ѓ¦roll‚Жyaw‚ЄЋжђа‚ЖЋАЌЫ‚Є‹t
-	roll_gyr 	= ((int16_t)ff[0]) | (((int16_t)ff[1]) << 8);	//’ј—§‰EЊXЋО‚Е Ѓ{
-	pitch_gyr	= ((int16_t)ff[2]) | (((int16_t)ff[3]) << 8);	//’ј—§‘OЊX‚Е   Ѓ|
-	yaw_gyr		= ((int16_t)ff[4]) | (((int16_t)ff[5]) << 8);	//’ј—§‰E‰с“]‚Е Ѓ{
+    if( mode<=720 && LEDct > 10 )LEDct = -10;    // IMU не готов
 
+    if( LEDct > 0   ){
+        dac_write (0xffff);
+        pio_write (PIO_LED1, LOW );  // ВКЛ
+    }
+    else{
+        dac_write (0);
+        pio_write (PIO_LED1, HIGH);  // ВЫКЛ
+    }
 
-	pio_write (PIO_T2, LOW );	//ON
-
-
-	keyCont();
-
-
-	walk();
-
-
-	///////////////
-	//// “ЄLED ////
-	///////////////
-	++LEDct;
-	if( LEDct > 100 )LEDct = -100;				//IMU Ready
-
-	if( mode<=720 && LEDct > 10 )LEDct = -10;	//IMU not Ready
-
-	if( LEDct > 0   ){
-		dac_write (0xffff);
-		pio_write (PIO_LED1, LOW );	//ON
-	}
-	else{
-		dac_write (0);
-		pio_write (PIO_LED1, HIGH);	//OFF
-	}
-
-	goto top;
+    goto top;
 }
